@@ -11,6 +11,26 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          path: python-market-data-downloader
+
+      - name: Checkout python-configuration-system
+        uses: actions/checkout@v4
+        with:
+          repository: cosmin3usebiu/python-configuration-system
+          path: python-configuration-system
+
+      - name: Checkout python-http-runtime
+        uses: actions/checkout@v4
+        with:
+          repository: cosmin3usebiu/python-http-runtime
+          path: python-http-runtime
+
+      - name: Checkout python-exchange-integration-runtime
+        uses: actions/checkout@v4
+        with:
+          repository: cosmin3usebiu/python-exchange-integration-runtime
+          path: python-exchange-integration-runtime
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -20,7 +40,11 @@ jobs:
       - name: Install package and test dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e ".[dev]"
+          python -m pip install -e ./python-configuration-system
+          python -m pip install -e ./python-http-runtime
+          python -m pip install -e ./python-exchange-integration-runtime
+          python -m pip install -e "./python-market-data-downloader[dev]"
 
       - name: Run tests
+        working-directory: python-market-data-downloader
         run: pytest
